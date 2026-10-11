@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Clients - Institute Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="navbar-container"></div>
+    <div class="d-flex">
+        <div id="sidebar-container" style="width: 250px; min-height: calc(100vh - 65px);"></div>
+        <div class="flex-grow-1 p-4">
+            <div class="surface-card">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="mb-0">Clients</h5>
+                    <button class="btn btn-accent" id="toggleAddClientBtn">
+                        <i class="bi bi-person-plus me-1"></i>Add New Client Profile
+                    </button>
+                </div>
+
+                <table class="table table-institute mb-0">
+                    <thead>
+                        <tr>
+                            <th>Client Name</th>
+                            <th>Email</th>
+                            <th>Contact</th>
+                            <th>Project</th>
+                            <th>Amount Paid</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="clientsTableBody"></tbody>
+                </table>
+
+                <!-- Inline Add/Edit Client Form -->
+                <div id="clientFormSection" style="display:none;" class="mt-3 pt-3"
+                    style="border-top:1px solid var(--color-border);">
+                    <h6 class="mb-3" id="clientFormTitle">Add New Client</h6>
+                    <form id="clientForm">
+                        <input type="hidden" id="clientId">
+                        <div class="mb-2">
+                            <label class="form-label">Client Full Name *</label>
+                            <input type="text" id="c_name" class="form-control name-input" pattern="[A-Za-z\s]{2,100}"
+                                title="Only letters and spaces" required>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Amount</label>
+                            <input type="number" step="0.01" min="0" id="c_amount_paid" class="form-control"
+                                placeholder="0">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">Business Email *</label>
+                                <input type="email" id="c_email" class="form-control" required>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">Phone *</label>
+                                <input type="tel" id="c_phone" class="form-control phone-input"
+                                    placeholder="03XXXXXXXXX" pattern="[0-9]{11}" maxlength="11" inputmode="numeric"
+                                    title="Enter exactly 11 digits" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">Industry *</label>
+                                <select id="c_industry" class="form-select" required>
+                                    <option value="">Select</option>
+                                    <option value="it">IT</option>
+                                    <option value="healthcare">Healthcare</option>
+                                    <option value="education">Education</option>
+                                    <option value="retail">Retail</option>
+                                    <option value="finance">Finance</option>
+                                    <option value="manufacturing">Manufacturing</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">Business Type *</label>
+                                <select id="c_business_type" class="form-select" required>
+                                    <option value="">Select</option>
+                                    <option value="startup">Startup</option>
+                                    <option value="sme">SME</option>
+                                    <option value="enterprise">Enterprise</option>
+                                    <option value="individual">Individual</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">Project Name *</label>
+                                <input type="text" id="c_project_name" class="form-control" required>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">Project Due Date *</label>
+                                <input type="date" id="c_project_due_date" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Project Requirements *</label>
+                            <textarea id="c_project_requirements" class="form-control" rows="2"
+                                placeholder="e.g. Android app with JazzCash integration..." required></textarea>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Deal Amount (Total agreed value)</label>
+                            <input type="number" step="0.01" min="0" id="c_deal_amount" class="form-control"
+                                placeholder="0">
+                        </div>
+                        <div class="row">
+    <div class="col-md-6 mb-2">
+        <label class="form-label">Assigned Employee</label>
+        <select id="c_assigned_employee" class="form-select">
+            <option value="">None</option>
+        </select>
+    </div>
+    <div class="col-md-6 mb-2">
+        <label class="form-label">Project Status</label>
+        <select id="c_project_status" class="form-select">
+            <option value="pending">Pending</option>
+            <option value="completed">Completed</option>
+        </select>
+    </div>
+</div>
+                        <div id="clientFormError" class="alert alert-danger d-none py-2 mb-2"></div>
+                        <button type="submit" class="btn btn-accent">Submit Client</button>
+                        <button type="button" class="btn btn-outline-secondary" id="cancelClientFormBtn">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Client Modal -->
+    <div class="modal fade" id="viewClientModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Client Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3"><span style="color:var(--color-muted);">Client Name</span>
+                            <div id="v_name" class="fw-semibold"></div>
+                        </div>
+                        <div class="col-md-6 mb-3"><span style="color:var(--color-muted);">Contact Person</span>
+                            <div id="v_contact_person" class="fw-semibold"></div>
+                        </div>
+                        <div class="col-md-6 mb-3"><span style="color:var(--color-muted);">Email</span>
+                            <div id="v_email" class="fw-semibold"></div>
+                        </div>
+                        <div class="col-md-6 mb-3"><span style="color:var(--color-muted);">Phone</span>
+                            <div id="v_phone" class="fw-semibold"></div>
+                        </div>
+                        <div class="col-md-6 mb-3"><span style="color:var(--color-muted);">Amount</span>
+                            <div id="v_paid_amount" class="fw-semibold"></div>
+                        </div>
+                        <div class="col-md-6 mb-3"><span style="color:var(--color-muted);">Deal Amount</span>
+                            <div id="v_deal_amount" class="fw-semibold"></div>
+                        </div>
+                        <div class="col-md-6 mb-3"><span style="color:var(--color-muted);">Industry</span>
+                            <div id="v_industry" class="fw-semibold"></div>
+                        </div>
+                        <div class="col-md-6 mb-3"><span style="color:var(--color-muted);">Business Type</span>
+                            <div id="v_business_type" class="fw-semibold"></div>
+                        </div>
+                        <div class="col-md-6 mb-3"><span style="color:var(--color-muted);">Project Name</span>
+                            <div id="v_project_name" class="fw-semibold"></div>
+                        </div>
+                        <div class="col-md-6 mb-3"><span style="color:var(--color-muted);">Project Due Date</span>
+                            <div id="v_project_due_date" class="fw-semibold"></div>
+                        </div>
+                        <div class="col-12 mb-2"><span style="color:var(--color-muted);">Project Requirements</span>
+                            <div id="v_project_requirements" class="fw-semibold"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Client Payment Modal -->
+    <div class="modal fade" id="clientPaymentModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="paymentModalTitle">Client Payments</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3"><strong>Total Received:</strong> <span id="clientTotalPaid"></span></div>
+                    <h6>Payment History</h6>
+                    <table class="table table-institute table-sm">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Amount</th>
+                                <th>Method</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="clientPaymentHistoryBody"></tbody>
+                    </table>
+                    <hr>
+                    <h6>Record Payment</h6>
+                    <form id="clientPaymentForm" class="row g-2">
+                        <input type="hidden" id="paymentClientId">
+                        <div class="col-md-4">
+                            <label class="form-label">Amount *</label>
+                            <input type="number" step="0.01" min="1" id="cp_amount" class="form-control" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Method *</label>
+                            <select id="cp_method" class="form-select" required>
+                                <option value="cash">Cash</option>
+                                <option value="bank">Bank</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Notes *</label>
+                            <input type="text" id="cp_notes" class="form-control" required>
+                        </div>
+                        <div class="col-12">
+                            <div id="clientPaymentError" class="alert alert-danger d-none py-2 mb-2"></div>
+                            <button type="submit" class="btn btn-accent">Record Payment</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/clients.js"></script>
+</body>
+
+</html>

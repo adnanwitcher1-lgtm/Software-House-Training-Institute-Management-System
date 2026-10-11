@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Daily Queries - Institute Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet">
+</head>
+<body>
+    <div id="navbar-container"></div>
+    <div class="d-flex">
+        <div id="sidebar-container" style="width: 250px; min-height: calc(100vh - 65px);"></div>
+        <div class="flex-grow-1 p-4">
+            <div class="surface-card">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="mb-0">Daily Queries</h5>
+                    <button class="btn btn-accent" onclick="openAddModal()">
+                        <i class="bi bi-plus-lg me-1"></i>New Query
+                    </button>
+                </div>
+                <table class="table table-institute">
+                    <thead>
+                        <tr><th>Name</th><th>Email</th><th>Category</th><th>Status</th><th class="text-end">Actions</th></tr>
+                    </thead>
+                    <tbody id="queriesTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="queryModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="queryModalTitle">New Query</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="queryForm">
+                    <div class="modal-body">
+                        <input type="hidden" id="queryId">
+                        <div class="mb-2">
+                            <label class="form-label">Full Name *</label>
+                            <input type="text" id="q_full_name" class="form-control name-input" pattern="[A-Za-z\s]{2,100}" placeholder="John Doe" required>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Email Address *</label>
+                            <input type="email" id="q_email" class="form-control" placeholder="john@example.com" required>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Your Question or Message *</label>
+                            <textarea id="q_message" class="form-control" rows="3" placeholder="How can we help you?" required></textarea>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Category *</label>
+                            <input type="text" id="q_category" class="form-control" placeholder="e.g., General Inquiry, Support, Feedback" required>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Status *</label>
+                            <select id="q_status" class="form-select" required>
+                                <option value="pending">Pending</option>
+                                <option value="responded">Responded</option>
+                            </select>
+                        </div>
+                        <div id="queryError" class="alert alert-danger d-none py-2 mb-0"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-accent">Submit Query</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/daily-queries.js"></script>
+</body>
+</html>

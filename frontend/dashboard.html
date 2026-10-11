@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Institute Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="navbar-container"></div>
+    <div class="d-flex">
+        <div id="sidebar-container" style="width: 250px; min-height: calc(100vh - 65px);"></div>
+        <div class="flex-grow-1 p-3">
+
+            <!-- ADMIN / RECEPTIONIST DASHBOARD -->
+            <div id="adminDashboardSection">
+                <div class="row g-2 mb-2">
+    <div class="col" style="flex:0 0 20%; max-width:20%;">
+        <div class="stat-card-light h-100">
+            <div class="stat-icon-circle" style="background:#FBE7E7; color:#D21F1F;"><i class="bi bi-person-lines-fill"></i></div>
+            <div>
+                <div class="stat-label">Total Leads</div>
+                <div class="stat-value" id="statLeads">-</div>
+                <div class="stat-trend"><i class="bi bi-arrow-up-short"></i> Live <span class="muted-trend">this month</span></div>
+            </div>
+        </div>
+    </div>
+    <div class="col" style="flex:0 0 20%; max-width:20%;">
+        <div class="stat-card-light h-100">
+            <div class="stat-icon-circle" style="background:#FDEDE3; color:#E8730A;"><i class="bi bi-chat-dots-fill"></i></div>
+            <div>
+                <div class="stat-label">Daily Queries</div>
+                <div class="stat-value" id="statQueries">-</div>
+                <div class="stat-trend"><i class="bi bi-arrow-up-short"></i> Live <span class="muted-trend">this month</span></div>
+            </div>
+        </div>
+    </div>
+    <div class="col" style="flex:0 0 20%; max-width:20%;">
+        <div class="stat-card-light h-100">
+            <div class="stat-icon-circle" style="background:#E9F7EC; color:#2E9E4F;"><i class="bi bi-mortarboard-fill"></i></div>
+            <div>
+                <div class="stat-label">Active Students</div>
+                <div class="stat-value" id="statStudents">-</div>
+                <div class="stat-trend"><i class="bi bi-arrow-up-short"></i> Live <span class="muted-trend">this month</span></div>
+            </div>
+        </div>
+    </div>
+    <div class="col" style="flex:0 0 20%; max-width:20%;">
+        <div class="stat-card-light h-100">
+            <div class="stat-icon-circle" style="background:#EDE9FB; color:#6B3FBF;"><i class="bi bi-people-fill"></i></div>
+            <div>
+                <div class="stat-label">Total Employees</div>
+                <div class="stat-value" id="statEmployees">-</div>
+                <div class="stat-trend"><i class="bi bi-arrow-up-short"></i> Live <span class="muted-trend">this month</span></div>
+            </div>
+        </div>
+    </div>
+    <div class="col" style="flex:0 0 20%; max-width:20%;">
+        <div class="stat-card-light h-100">
+            <div class="stat-icon-circle" style="background:#E7F0FB; color:#1E6FD9;"><i class="bi bi-cash-coin"></i></div>
+            <div>
+                <div class="stat-label">Current Balance</div>
+                <div class="stat-value" id="statBalance">-</div>
+                <div class="stat-trend"><i class="bi bi-arrow-up-short"></i> Live <span class="muted-trend">this month</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+                <div class="row g-2 mb-2">
+                    <div class="col-md-7">
+                        <div class="chart-card-light w-100">
+                            <div class="chart-card-header">
+                                <div class="title-group">
+                                    <div class="title-icon-badge"><i class="bi bi-graph-up"></i></div>
+                                    <h6>Revenue vs Expenses (Last 6 Months)</h6>
+                                </div>
+                                <div>
+                                    <button class="period-pill active" type="button">6 Months</button>
+                                    <button class="period-pill" type="button">Last 12 Months</button>
+                                </div>
+                            </div>
+                            <div style="height: 170px;"><canvas id="revenueChart"></canvas></div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+    <div class="chart-card-light w-100">
+        <div class="chart-card-header">
+            <div class="title-group">
+                <div class="title-icon-badge"><i class="bi bi-pie-chart-fill"></i></div>
+                <h6>Expense Breakdown</h6>
+            </div>
+        </div>
+        <div class="d-flex align-items-center justify-content-center gap-3">
+            <div style="height: 170px; width:170px; flex-shrink:0;"><canvas id="expenseChart"></canvas></div>
+            <div style="min-width:0;" id="expenseLegend"></div>
+        </div>
+    </div>
+</div>
+                </div>
+
+                <div class="row g-2">
+                    <div class="col-md-6">
+                        <div class="list-card-light">
+                            <div class="list-card-header">
+                                <div class="title-group">
+                                    <div class="title-icon-badge"><i class="bi bi-people-fill"></i></div>
+                                    <h6>Recent Daily Leads</h6>
+                                </div>
+                                <a href="daily-leads.html" class="view-all-link">View All</a>
+                            </div>
+                            <div id="recentLeads"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="list-card-light">
+                            <div class="list-card-header">
+                                <div class="title-group">
+                                    <div class="title-icon-badge"><i class="bi bi-calendar-event-fill"></i></div>
+                                    <h6>Upcoming Deadlines / Events</h6>
+                                </div>
+                            </div>
+                            <div id="upcomingDeadlines"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EMPLOYEE DASHBOARD -->
+            <div id="employeeDashboardSection" style="display:none;">
+                <div class="row g-2 mb-2">
+                    <div class="col-md-4">
+                        <div class="stat-card-light h-100">
+                            <div class="stat-icon-circle mb-2" style="background:#E9F7EC; color:#2E9E4F;"><i class="bi bi-mortarboard-fill"></i></div>
+                            <div class="stat-label">Students</div>
+                            <div class="stat-value" id="empStatStudents">-</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-card-light h-100">
+                            <div class="stat-icon-circle mb-2" style="background:#FDEDE3; color:#E8730A;"><i class="bi bi-hourglass-split"></i></div>
+                            <div class="stat-label">Pending Projects</div>
+                            <div class="stat-value" id="empStatPending">-</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-card-light h-100">
+                            <div class="stat-icon-circle mb-2" style="background:#FBE7E7; color:#D21F1F;"><i class="bi bi-check-circle-fill"></i></div>
+                            <div class="stat-label">Completed Projects</div>
+                            <div class="stat-value" id="empStatCompleted">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-2 mb-2">
+                    <div class="col-md-6">
+                        <div class="chart-card-light w-100 h-100">
+                            <div class="chart-card-header">
+                                <div class="title-group">
+                                    <div class="title-icon-badge"><i class="bi bi-graph-up"></i></div>
+                                    <h6>Enrollment Trend (This Month)</h6>
+                                </div>
+                            </div>
+                            <div style="height: 170px;"><canvas id="empEnrollmentChart"></canvas></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+    <div class="chart-card-light w-100 h-100">
+        <div class="chart-card-header">
+            <div class="title-group">
+                <div class="title-icon-badge"><i class="bi bi-pie-chart-fill"></i></div>
+                <h6>Today's Attendance</h6>
+            </div>
+        </div>
+        <div class="d-flex align-items-center justify-content-center gap-3">
+            <div style="height: 170px; width:170px; flex-shrink:0;"><canvas id="empAttendanceChart"></canvas></div>
+            <div style="min-width:0;" id="attendanceLegend"></div>
+        </div>
+    </div>
+</div>
+                </div>
+
+                <div class="list-card-light">
+                    <h6 class="mb-2">My Projects</h6>
+                    <table class="table table-institute">
+                        <thead>
+                            <tr><th>Project</th><th>Client</th><th>Due Date</th><th>Status</th><th class="text-end">Action</th></tr>
+                        </thead>
+                        <tbody id="empProjectsBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Project View Modal -->
+    <div class="modal fade" id="projectViewModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content surface-card">
+                <div class="modal-header">
+                    <h6 class="modal-title">Project Details</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="projectViewBody"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script>
+        document.querySelectorAll('.period-pill').forEach(btn => {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.period-pill').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+
+</html>

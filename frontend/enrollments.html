@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Enrollments - Institute Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="navbar-container"></div>
+    <div class="d-flex">
+        <div id="sidebar-container" style="width: 250px; min-height: calc(100vh - 65px);"></div>
+        <div class="flex-grow-1 p-4">
+            <div class="surface-card">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="mb-0">Enrollments</h5>
+                    <button class="btn btn-accent" onclick="openEnrollModal()">
+                        <i class="bi bi-plus-lg me-1"></i>New Enrollment
+                    </button>
+                </div>
+                <table class="table table-institute">
+                    <thead>
+                        <tr>
+                            <th>Reg No</th>
+                            <th>Student</th>
+                            <th>Course</th>
+                            <th>Date</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="enrollmentsTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Enrollment Modal -->
+    <div class="modal fade" id="enrollModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">New Enrollment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="enrollForm">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">Student Name *</label>
+                                <input type="text" id="newFullName" class="form-control name-input"
+                                    placeholder="Enter full name" pattern="[A-Za-z\s]{2,60}"
+                                    title="Only letters and spaces, 2-60 characters" required>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">Father's Name *</label>
+                                <input type="text" id="newGuardianName" class="form-control name-input"
+                                    placeholder="Enter father's name" pattern="[A-Za-z\s]{2,60}"
+                                    title="Only letters and spaces, 2-60 characters" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">Student Phone Number *</label>
+                                <input type="tel" id="newPhone" class="form-control phone-input"
+                                    placeholder="03XXXXXXXXX" pattern="[0-9]{11}" maxlength="11" inputmode="numeric"
+                                    title="Enter exactly 11 digits" required>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">Father / Guardian Phone Number *</label>
+                                <input type="tel" id="newGuardianPhone" class="form-control phone-input"
+                                    placeholder="03XXXXXXXXX" pattern="[0-9]{11}" maxlength="11" inputmode="numeric"
+                                    title="Enter exactly 11 digits" required>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+    <label class="form-label">Gender *</label>
+    <select id="newGender" class="form-select" required>
+        <option value="">Select Gender</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+    </select>
+</div>
+                        <div class="mb-2">
+                            <label class="form-label">Residential Address *</label>
+                            <textarea id="newAddress" class="form-control" rows="2"
+                                placeholder="Enter full home address" required></textarea>
+                        </div>
+
+                        <hr style="border-color: var(--color-border);">
+
+                        <div class="row align-items-end">
+                            <div class="col-md-7 mb-2">
+                                <label class="form-label">Course Selection *</label>
+                                <select id="enrollCourse" class="form-select" required></select>
+                            </div>
+                            <div class="col-md-5 mb-2">
+                                <label class="form-label d-block">Course Fee</label>
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="fw-semibold" id="courseFeeDisplay">Rs. 0</span>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary"
+                                        id="toggleConcessionBtn">Other</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="concessionBlock" style="display:none;" class="mb-2">
+                            <label class="form-label">Concession Amount</label>
+                            <input type="number" step="0.01" id="concessionAmount" class="form-control" placeholder="0">
+                            <div class="small mt-1" style="color:var(--color-muted);">Final Fee: <span
+                                    id="finalFeeDisplay">Rs. 0</span></div>
+                        </div>
+
+                        
+                        <div id="enrollError" class="alert alert-danger d-none mt-2 mb-0 py-2"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-accent">Enroll</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Details Modal -->
+    <div class="modal fade" id="detailModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Enrollment Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="detailEnrollmentId">
+                    <input type="hidden" id="detailStudentId">
+                    <div class="row" id="detailViewMode">
+                        <div class="col-md-6 mb-2"><span style="color:var(--color-muted);">Student Name</span>
+                            <div id="d_full_name" class="fw-semibold"></div>
+                        </div>
+                        <div class="col-md-6 mb-2"><span style="color:var(--color-muted);">Father's Name</span>
+                            <div id="d_guardian_name" class="fw-semibold"></div>
+                        </div>
+                        <div class="col-md-6 mb-2"><span style="color:var(--color-muted);">Phone</span>
+                            <div id="d_phone" class="fw-semibold"></div>
+                        </div>
+                        <div class="col-md-6 mb-2"><span style="color:var(--color-muted);">Guardian Phone</span>
+                            <div id="d_guardian_phone" class="fw-semibold"></div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-2"><span style="color:var(--color-muted);">Address</span>
+                            <div id="d_address" class="fw-semibold"></div>
+                        </div>
+                        <div class="col-md-6 mb-2"><span style="color:var(--color-muted);">Course</span>
+                            <div id="d_course" class="fw-semibold"></div>
+                        </div>
+                        <div class="col-md-6 mb-2"><span style="color:var(--color-muted);">Enrollment Date</span>
+                            <div id="d_enrollment_date" class="fw-semibold"></div>
+                        </div>
+                        
+                        
+                        <div class="col-md-6 mb-2"><span style="color:var(--color-muted);">Internship Status</span>
+                            <div id="d_internship_status" class="fw-semibold"></div>
+                        </div>
+                    </div>
+
+                    <form id="detailEditForm" style="display:none;">
+                        <div class="row">
+                            <div class="col-md-6 mb-2"><label class="form-label">Phone</label><input type="text"
+                                    id="e_phone" class="form-control"></div>
+                            <div class="col-md-6 mb-2"><label class="form-label">Guardian Phone</label><input
+                                    type="text" id="e_guardian_phone" class="form-control"></div>
+                            
+                            <div class="col-md-6 mb-2"><label class="form-label">Address</label><input type="text"
+                                    id="e_address" class="form-control"></div>
+                            
+                            <div class="col-md-6 mb-2"><label class="form-label">Status</label>
+                                <select id="e_status" class="form-select">
+                                    <option value="active">Active</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="cancelled">Cancelled</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-2"><label class="form-label">Internship Status</label>
+                                <select id="e_internship_status" class="form-select">
+                                    <option value="not_started">Not Started</option>
+                                    <option value="in_progress">In Progress</option>
+                                    <option value="completed">Completed</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-accent" id="detailEditBtn"
+                        onclick="enterEditMode()">Edit</button>
+                    <button type="button" class="btn btn-accent" id="detailSaveBtn" style="display:none;"
+                        onclick="saveDetailEdit()">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/enrollments.js"></script>
+</body>
+
+</html>
