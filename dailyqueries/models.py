@@ -9,6 +9,7 @@ class DailyQuery(models.Model):
     )
     full_name = models.CharField(max_length=100)
     email = models.EmailField()
+    phone = models.CharField(max_length=20, blank=True, default='')
     message = models.TextField()
     category = models.CharField(max_length=100)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
