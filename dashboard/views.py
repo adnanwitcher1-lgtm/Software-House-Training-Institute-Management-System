@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from students.models import Student
 from employees.models import Employee
-from fees.models import Payment
+from fees.models import Payment, Fee
 from expenses.models import Expense
 from dailyleads.models import DailyLead
 from dailyqueries.models import DailyQuery
@@ -33,6 +33,16 @@ class DashboardStatsView(APIView):
         total_revenue = student_revenue + client_revenue
         total_expenses = Expense.objects.aggregate(total=Sum('amount'))['total'] or 0
         current_balance = total_revenue - total_expenses
+
+        # Pending student fees: total fee - paid, per enrollment
+        total_fee_amount = Fee.objects.aggregate(total=Sum('total_fee'))['total'] or 0
+        pending_fee_amount = 0
+        pending_fee_students = set()
+        for fee in Fee.objects.select_related('enrollment').annotate(paid=Sum('payments__amount_paid')):
+            remaining = fee.total_fee - (fee.paid or 0)
+            if remaining > 0:
+                pending_fee_amount += remaining
+                pending_fee_students.add(fee.enrollment.student_id)
 
         revenue_expenses_chart = []
         for i in range(5, -1, -1):
@@ -87,6 +97,12 @@ class DashboardStatsView(APIView):
             'active_students': active_students,
             'total_employees': total_employees,
             'current_balance': float(current_balance),
+            'total_income': float(total_revenue),
+            'student_income': float(student_revenue),
+            'client_income': float(client_revenue),
+            'total_expenses': float(total_expenses),
+            'pending_fee_amount': float(pending_fee_amount),
+            'pending_fee_students': len(pending_fee_students),
             'revenue_expenses_chart': revenue_expenses_chart,
             'expense_breakdown': expense_breakdown,
             'recent_leads': recent_leads,
