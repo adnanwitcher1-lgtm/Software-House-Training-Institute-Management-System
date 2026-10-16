@@ -33,6 +33,15 @@ async function loadAdminDashboard() {
     document.getElementById("statStudents").textContent = data.active_students;
     document.getElementById("statEmployees").textContent = data.total_employees;
     document.getElementById("statBalance").textContent = `Rs. ${data.current_balance.toLocaleString()}`;
+    const rs = n => `Rs. ${Number(n || 0).toLocaleString()}`;
+    document.getElementById("statIncome").textContent = rs(data.total_income);
+    document.getElementById("statIncomeSub").textContent = `Fees ${rs(data.student_income)} + Clients ${rs(data.client_income)}`;
+    document.getElementById("statExpense").textContent = rs(data.total_expenses);
+    document.getElementById("statExpenseSub").textContent = "All recorded expenses";
+    document.getElementById("statPendingFee").textContent = rs(data.pending_fee_amount);
+    document.getElementById("statPendingFeeSub").textContent = `${data.pending_fee_students} students unpaid`;
+    document.getElementById("statNet").textContent = rs(data.total_income - data.total_expenses);
+    document.getElementById("statNetSub").textContent = "Income - Expense";
 
     new Chart(document.getElementById("revenueChart"), {
         type: 'line',
