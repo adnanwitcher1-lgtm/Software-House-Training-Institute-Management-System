@@ -23,7 +23,7 @@
                 </div>
                 <table class="table table-institute">
                     <thead>
-                        <tr><th>Name</th><th>Email</th><th>Category</th><th>Status</th><th class="text-end">Actions</th></tr>
+                        <tr><th>Name</th><th>Email</th><th>Phone No</th><th>Category</th><th>Status</th><th class="text-end">Actions</th></tr>
                     </thead>
                     <tbody id="queriesTableBody"></tbody>
                 </table>
@@ -48,6 +48,10 @@
                         <div class="mb-2">
                             <label class="form-label">Email Address *</label>
                             <input type="email" id="q_email" class="form-control" placeholder="john@example.com" required>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Phone No *</label>
+                            <input type="tel" id="q_phone" class="form-control" pattern="[0-9+\-\s]{10,20}" placeholder="03001234567" required>
                         </div>
                         <div class="mb-2">
                             <label class="form-label">Your Question or Message *</label>
