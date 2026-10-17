@@ -29,7 +29,7 @@ async function loadAdminDashboard() {
     if (existingExpense) existingExpense.destroy();
 
     document.getElementById("statLeads").textContent = data.total_leads;
-    document.getElementById("statQueries").textContent = data.daily_queries_count;
+    document.getElementById("statQueries").textContent = data.client_queries_count;
     document.getElementById("statStudents").textContent = data.active_students;
     document.getElementById("statEmployees").textContent = data.total_employees;
     document.getElementById("statBalance").textContent = `Rs. ${data.current_balance.toLocaleString()}`;
