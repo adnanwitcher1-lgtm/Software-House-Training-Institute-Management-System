@@ -61,7 +61,6 @@ function viewClient(id) {
     document.getElementById("v_paid_amount").textContent = `Rs. ${c.paid_amount}`;
     document.getElementById("v_deal_amount").textContent = c.deal_amount ? `Rs. ${c.deal_amount}` : "-";
     document.getElementById("v_industry").textContent = c.industry || "-";
-    document.getElementById("v_business_type").textContent = c.business_type || "-";
     document.getElementById("v_project_name").textContent = c.project_name || "-";
     document.getElementById("v_project_due_date").textContent = c.project_due_date || "-";
     document.getElementById("v_project_requirements").textContent = c.project_requirements || "-";
@@ -79,7 +78,6 @@ function editClient(id) {
     document.getElementById("c_email").value = c.email;
     document.getElementById("c_phone").value = c.phone;
     document.getElementById("c_industry").value = c.industry || "";
-    document.getElementById("c_business_type").value = c.business_type || "";
     document.getElementById("c_project_name").value = c.project_name || "";
     document.getElementById("c_project_due_date").value = c.project_due_date || "";
     document.getElementById("c_project_requirements").value = c.project_requirements || "";
@@ -100,7 +98,6 @@ document.getElementById("clientForm").addEventListener("submit", async (e) => {
         email: document.getElementById("c_email").value,
         phone: document.getElementById("c_phone").value,
         industry: document.getElementById("c_industry").value,
-        business_type: document.getElementById("c_business_type").value,
         project_name: document.getElementById("c_project_name").value,
         project_due_date: document.getElementById("c_project_due_date").value || null,
         project_requirements: document.getElementById("c_project_requirements").value,
