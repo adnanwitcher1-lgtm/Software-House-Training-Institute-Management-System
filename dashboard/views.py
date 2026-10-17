@@ -24,7 +24,6 @@ class DashboardStatsView(APIView):
 
         total_leads = DailyLead.objects.count()
         daily_queries_count = DailyQuery.objects.count()
-        pending_queries_count = DailyQuery.objects.filter(status='pending').count()
         active_students = Enrollment.objects.filter(status='active').values('student').distinct().count()
         total_employees = Employee.objects.count()
 
@@ -73,7 +72,7 @@ class DashboardStatsView(APIView):
             e['total'] = float(e['total'])
 
         recent_leads = list(
-            DailyLead.objects.order_by('-created_at')[:3].values('full_name', 'company_name', 'interested_in', 'created_at')
+            DailyLead.objects.order_by('-created_at')[:3].values('full_name', 'course__name', 'reference', 'created_at')
         )
 
         upcoming_deadlines = []
@@ -93,7 +92,6 @@ class DashboardStatsView(APIView):
         return Response({
             'total_leads': total_leads,
             'daily_queries_count': daily_queries_count,
-            'pending_queries_count': pending_queries_count,
             'active_students': active_students,
             'total_employees': total_employees,
             'current_balance': float(current_balance),
@@ -142,7 +140,7 @@ class EmployeeDashboardStatsView(APIView):
             today_absent = Attendance.objects.filter(course=course, date=today, status='absent').count()
             today_attendance = {'present': today_present, 'absent': today_absent}
 
-        pending_projects = Client.objects.filter(assigned_employee=employee, project_status='pending').count()
+        pending_projects = Client.objects.filter(assigned_employee=employee).exclude(project_status='completed').count()
         completed_projects = Client.objects.filter(assigned_employee=employee, project_status='completed').count()
 
         return Response({
