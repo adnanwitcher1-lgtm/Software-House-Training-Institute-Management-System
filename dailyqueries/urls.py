@@ -1,7 +1,7 @@
 from rest_framework.routers import DefaultRouter
-from .views import DailyQueryViewSet
+from .views import ClientQueryViewSet
 
 router = DefaultRouter()
-router.register('', DailyQueryViewSet, basename='dailyquery')
+router.register('', ClientQueryViewSet, basename='clientquery')
 
 urlpatterns = router.urls
