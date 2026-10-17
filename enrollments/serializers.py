@@ -24,7 +24,7 @@ class EnrollmentSerializer(serializers.ModelSerializer):
         model = Enrollment
         fields = [
             'id', 'student', 'student_detail', 'course', 'course_detail',
-            'enrollment_date', 'expected_end_date', 'status', 'internship_status',
+            'enrollment_date', 'expected_end_date', 'status', 'internship_status', 'reference',
             'created_by', 'created_at', 'concession_amount',
         ]
         read_only_fields = ['enrollment_date', 'created_by']
