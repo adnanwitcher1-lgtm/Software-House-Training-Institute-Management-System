@@ -10,7 +10,7 @@ from employees.models import Employee
 from fees.models import Payment, Fee
 from expenses.models import Expense
 from dailyleads.models import DailyLead
-from dailyqueries.models import DailyQuery
+from dailyqueries.models import ClientQuery
 from clients.models import Client
 from enrollments.models import Enrollment
 from clients.models import ClientPayment
@@ -23,7 +23,7 @@ class DashboardStatsView(APIView):
         today = date.today()
 
         total_leads = DailyLead.objects.count()
-        daily_queries_count = DailyQuery.objects.count()
+        client_queries_count = ClientQuery.objects.count()
         active_students = Enrollment.objects.filter(status='active').values('student').distinct().count()
         total_employees = Employee.objects.count()
 
@@ -91,7 +91,7 @@ class DashboardStatsView(APIView):
 
         return Response({
             'total_leads': total_leads,
-            'daily_queries_count': daily_queries_count,
+            'client_queries_count': client_queries_count,
             'active_students': active_students,
             'total_employees': total_employees,
             'current_balance': float(current_balance),
