@@ -14,6 +14,7 @@ async function loadEnrollments() {
         <td class="small" style="color:var(--color-muted);">${en.student_detail.registration_number}</td>
         <td>${en.student_detail.full_name}</td>
         <td>${en.course_detail.name.replace(/_/g, ' ')}</td>
+        <td>${en.reference || '-'}</td>
         <td>${en.enrollment_date}</td>
             <td class="text-end">
                 <div class="dropdown d-inline-block">
@@ -25,7 +26,7 @@ async function loadEnrollments() {
                 <button class="btn btn-sm btn-outline-danger ms-1" onclick="deleteEnrollment(${en.id}, '${en.student_detail.full_name}')"><i class="bi bi-trash"></i></button>
             </td>
         </tr>
-    `).join("") || `<tr><td colspan="5" class="text-center py-4" style="color:var(--color-muted);">No enrollments yet.</td></tr>`;
+    `).join("") || `<tr><td colspan="6" class="text-center py-4" style="color:var(--color-muted);">No enrollments yet.</td></tr>`;
 }
 
 
@@ -100,6 +101,7 @@ document.getElementById("enrollForm").addEventListener("submit", async (e) => {
     const payload = {
     student: studentData.id,
     course: document.getElementById("enrollCourse").value,
+    reference: document.getElementById("newReference").value,
     concession_amount: parseFloat(document.getElementById("concessionAmount").value) || 0,
 };
     const res = await apiFetch("/enrollments/", { method: "POST", body: JSON.stringify(payload) });
@@ -130,6 +132,7 @@ async function openDetail(enrollmentId) {
     document.getElementById("d_guardian_phone").textContent = student.guardian_phone || "-";
     document.getElementById("d_address").textContent = student.address || "-";
     document.getElementById("d_course").textContent = en.course_detail.name.replace(/_/g, ' ');
+    document.getElementById("d_reference").textContent = en.reference || "-";
     document.getElementById("d_enrollment_date").textContent = en.enrollment_date;
     document.getElementById("d_internship_status").textContent = en.internship_status.replace('_', ' ');
 
@@ -153,6 +156,7 @@ function enterEditMode() {
     
     document.getElementById("e_address").value = student.address || "";
     
+    document.getElementById("e_reference").value = en.reference || "";
     document.getElementById("e_status").value = en.status;
     document.getElementById("e_internship_status").value = en.internship_status;
 
@@ -171,7 +175,6 @@ async function saveDetailEdit() {
         body: JSON.stringify({
             phone: document.getElementById("e_phone").value,
             guardian_phone: document.getElementById("e_guardian_phone").value,
-            email: document.getElementById("e_email").value,
             address: document.getElementById("e_address").value,
         }),
     });
@@ -179,7 +182,7 @@ async function saveDetailEdit() {
     await apiFetch(`/enrollments/${enrollmentId}/`, {
         method: "PATCH",
         body: JSON.stringify({
-            expected_end_date: document.getElementById("e_expected_end_date").value || null,
+            reference: document.getElementById("e_reference").value,
             status: document.getElementById("e_status").value,
             internship_status: document.getElementById("e_internship_status").value,
         }),
