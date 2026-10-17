@@ -1,20 +1,29 @@
 let queriesCache = [];
+let coursesCache = [];
+
+async function loadCourses() {
+    const res = await apiFetch("/courses/");
+    coursesCache = res && res.ok ? (await res.json()).results : [];
+    document.getElementById("q_course").innerHTML =
+        `<option value="">Select Course</option>` +
+        coursesCache.map(c => `<option value="${c.id}">${c.name.replace(/_/g, ' ')}</option>`).join("");
+}
 
 async function loadQueries() {
     const res = await apiFetch("/daily-queries/");
     if (!res || !res.ok) return;
     queriesCache = (await res.json()).results;
 
-    document.getElementById("queriesTableBody").innerHTML = queriesCache.map(q => `
+    document.getElementById("queriesTableBody").innerHTML = queriesCache.map(x => `
         <tr>
-            <td>${q.full_name}</td>
-            <td>${q.email}</td>
-            <td>${q.phone || '-'}</td>
-            <td>${q.category}</td>
-            <td><span class="status-pill status-${q.status === 'responded' ? 'active' : 'inactive'}">${q.status}</span></td>
+            <td>${x.full_name}</td>
+            <td>${x.guardian_name || '-'}</td>
+            <td>${x.phone || '-'}</td>
+            <td>${x.course_name ? x.course_name.replace(/_/g, ' ') : '-'}</td>
+            <td>${x.reference || '-'}</td>
             <td class="text-end">
-                <button class="btn btn-sm btn-outline-secondary me-1" onclick="editQuery(${q.id})"><i class="bi bi-pencil"></i></button>
-                <button class="btn btn-sm btn-outline-danger" onclick="deleteQuery(${q.id})"><i class="bi bi-trash"></i></button>
+                <button class="btn btn-sm btn-outline-secondary me-1" onclick="editQuery(${x.id})"><i class="bi bi-pencil"></i></button>
+                <button class="btn btn-sm btn-outline-danger" onclick="deleteQuery(${x.id})"><i class="bi bi-trash"></i></button>
             </td>
         </tr>
     `).join("") || `<tr><td colspan="6" class="text-center py-4" style="color:var(--color-muted);">No queries yet.</td></tr>`;
@@ -29,16 +38,18 @@ function openAddModal() {
 }
 
 function editQuery(id) {
-    const q = queriesCache.find(x => x.id === id);
-    if (!q) return;
+    const x = queriesCache.find(r => r.id === id);
+    if (!x) return;
     document.getElementById("queryModalTitle").textContent = "Edit Query";
-    document.getElementById("queryId").value = q.id;
-    document.getElementById("q_full_name").value = q.full_name;
-    document.getElementById("q_email").value = q.email;
-    document.getElementById("q_phone").value = q.phone || "";
-    document.getElementById("q_message").value = q.message;
-    document.getElementById("q_category").value = q.category;
-    document.getElementById("q_status").value = q.status;
+    document.getElementById("queryId").value = x.id;
+    document.getElementById("q_full_name").value = x.full_name || "";
+    document.getElementById("q_guardian_name").value = x.guardian_name || "";
+    document.getElementById("q_phone").value = x.phone || "";
+    document.getElementById("q_guardian_phone").value = x.guardian_phone || "";
+    document.getElementById("q_gender").value = x.gender || "";
+    document.getElementById("q_address").value = x.address || "";
+    document.getElementById("q_course").value = x.course || "";
+    document.getElementById("q_reference").value = x.reference || "";
     document.getElementById("queryError").classList.add("d-none");
     new bootstrap.Modal(document.getElementById("queryModal")).show();
 }
@@ -48,11 +59,13 @@ document.getElementById("queryForm").addEventListener("submit", async (e) => {
     const id = document.getElementById("queryId").value;
     const payload = {
         full_name: document.getElementById("q_full_name").value,
-        email: document.getElementById("q_email").value,
+        guardian_name: document.getElementById("q_guardian_name").value,
         phone: document.getElementById("q_phone").value,
-        message: document.getElementById("q_message").value,
-        category: document.getElementById("q_category").value,
-        status: document.getElementById("q_status").value,
+        guardian_phone: document.getElementById("q_guardian_phone").value,
+        gender: document.getElementById("q_gender").value,
+        address: document.getElementById("q_address").value,
+        course: document.getElementById("q_course").value || null,
+        reference: document.getElementById("q_reference").value,
     };
     const url = id ? `/daily-queries/${id}/` : "/daily-queries/";
     const method = id ? "PATCH" : "POST";
@@ -75,4 +88,7 @@ async function deleteQuery(id) {
     if (res && res.ok) loadQueries();
 }
 
-document.addEventListener("DOMContentLoaded", loadQueries);
+document.addEventListener("DOMContentLoaded", async () => {
+    await loadCourses();
+    loadQueries();
+});
