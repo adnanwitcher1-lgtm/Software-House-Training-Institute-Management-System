@@ -138,11 +138,11 @@ async function loadAdminDashboard() {
                 <div class="lead-avatar"><i class="bi bi-person"></i></div>
                 <div>
                     <div class="fw-semibold" style="font-size:13px;">${l.full_name}</div>
-                    <div class="muted-light">${l.company_name}</div>
+                    <div class="muted-light">${l.reference ? "Ref: " + l.reference : "No reference"}</div>
                 </div>
             </div>
             <div class="text-end">
-                <span class="pill-tag" style="background:#FBE7E7; color:#D21F1F;">${l.interested_in}</span>
+                <span class="pill-tag" style="background:#FBE7E7; color:#D21F1F;">${l.course__name ? l.course__name.replace(/_/g, " ") : "-"}</span>
                 <div class="muted-light mt-1">${new Date(l.created_at).toLocaleDateString()}</div>
             </div>
         </div>
@@ -270,7 +270,7 @@ async function loadEmployeeProjects() {
             <td><span class="status-pill status-${p.project_status === 'completed' ? 'active' : 'inactive'}">${p.project_status}</span></td>
             <td class="text-end">
                 <button class="btn btn-sm btn-outline-secondary" onclick='viewProject(${JSON.stringify(p)})'>View</button>
-                ${p.project_status === 'pending'
+                ${p.project_status !== 'completed'
                     ? `<button class="btn btn-sm btn-accent ms-1" onclick="completeProject(${p.id})">Completed</button>`
                     : ''}
             </td>
