@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Daily Queries - Institute Management System</title>
+    <title>Client Queries - Institute Management System</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
     <link href="css/custom.css" rel="stylesheet">
 </head>
+
 <body>
     <div id="navbar-container"></div>
     <div class="d-flex">
@@ -16,89 +19,163 @@
         <div class="flex-grow-1 p-4">
             <div class="surface-card">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="mb-0">Daily Queries</h5>
-                    <button class="btn btn-accent" onclick="openAddModal()">
-                        <i class="bi bi-plus-lg me-1"></i>New Query
+                    <h5 class="mb-0">Client Queries</h5>
+                    <button class="btn btn-accent" id="toggleAddQueryBtn">
+                        <i class="bi bi-plus-lg me-1"></i>New Client Query
                     </button>
                 </div>
-                <table class="table table-institute">
+
+                <table class="table table-institute mb-0">
                     <thead>
-                        <tr><th>Student Name</th><th>Father's Name</th><th>Phone</th><th>Course</th><th>Reference</th><th class="text-end">Actions</th></tr>
+                        <tr>
+                            <th>Client Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Project</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
                     </thead>
                     <tbody id="queriesTableBody"></tbody>
                 </table>
-            </div>
-        </div>
-    </div>
 
-    <div class="modal fade" id="queryModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="queryModalTitle">New Query</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <form id="queryForm">
-                    <div class="modal-body">
+                <!-- Inline Add/Edit Client Query Form -->
+                <div id="queryFormSection" style="display:none; border-top:1px solid var(--color-border);"
+                    class="mt-3 pt-3">
+                    <h6 class="mb-3" id="queryFormTitle">New Client Query</h6>
+                    <form id="queryForm">
                         <input type="hidden" id="queryId">
-                        <div class="row">
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label">Student Name *</label>
-                                <input type="text" id="q_full_name" class="form-control name-input"
-                                    placeholder="Enter full name" pattern="[A-Za-z\s]{2,60}"
-                                    title="Only letters and spaces, 2-60 characters" required>
-                            </div>
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label">Father's Name *</label>
-                                <input type="text" id="q_guardian_name" class="form-control name-input"
-                                    placeholder="Enter father's name" pattern="[A-Za-z\s]{2,60}"
-                                    title="Only letters and spaces, 2-60 characters" required>
-                            </div>
+                        <div class="mb-2">
+                            <label class="form-label">Client Full Name *</label>
+                            <input type="text" id="q_name" class="form-control name-input" pattern="[A-Za-z\s]{2,100}"
+                                title="Only letters and spaces" required>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Amount</label>
+                            <input type="number" step="0.01" min="0" id="q_amount" class="form-control"
+                                placeholder="0">
                         </div>
                         <div class="row">
                             <div class="col-md-6 mb-2">
-                                <label class="form-label">Student Phone Number *</label>
+                                <label class="form-label">Business Email *</label>
+                                <input type="email" id="q_email" class="form-control" required>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">Phone *</label>
                                 <input type="tel" id="q_phone" class="form-control phone-input"
                                     placeholder="03XXXXXXXXX" pattern="[0-9]{11}" maxlength="11" inputmode="numeric"
                                     title="Enter exactly 11 digits" required>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-6 mb-2">
-                                <label class="form-label">Father / Guardian Phone Number *</label>
-                                <input type="tel" id="q_guardian_phone" class="form-control phone-input"
-                                    placeholder="03XXXXXXXXX" pattern="[0-9]{11}" maxlength="11" inputmode="numeric"
-                                    title="Enter exactly 11 digits" required>
+                                <label class="form-label">Business Type *</label>
+                                <select id="q_industry" class="form-select" required>
+                                    <option value="">Select</option>
+                                    <option value="it">IT</option>
+                                    <option value="healthcare">Healthcare</option>
+                                    <option value="education">Education</option>
+                                    <option value="retail">Retail</option>
+                                    <option value="finance">Finance</option>
+                                    <option value="manufacturing">Manufacturing</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">Project Name *</label>
+                                <input type="text" id="q_project_name" class="form-control" required>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">Project Due Date *</label>
+                                <input type="date" id="q_project_due_date" class="form-control" required>
                             </div>
                         </div>
                         <div class="mb-2">
-                            <label class="form-label">Gender *</label>
-                            <select id="q_gender" class="form-select" required>
-                                <option value="">Select Gender</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                                <option value="other">Other</option>
-                            </select>
+                            <label class="form-label">Project Requirements *</label>
+                            <textarea id="q_project_requirements" class="form-control" rows="2"
+                                placeholder="e.g. Android app with JazzCash integration..." required></textarea>
                         </div>
                         <div class="mb-2">
-                            <label class="form-label">Residential Address *</label>
-                            <textarea id="q_address" class="form-control" rows="2"
-                                placeholder="Enter full home address" required></textarea>
+                            <label class="form-label">Deal Amount (Total agreed value)</label>
+                            <input type="number" step="0.01" min="0" id="q_deal_amount" class="form-control"
+                                placeholder="0">
                         </div>
-                        <div class="mb-2">
-                            <label class="form-label">Course Selection *</label>
-                            <select id="q_course" class="form-select" required></select>
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">Assigned Employee</label>
+                                <select id="q_assigned_employee" class="form-select">
+                                    <option value="">None</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">Project Status</label>
+                                <select id="q_project_status" class="form-select">
+                                    <option value="pending">Pending</option>
+                                    <option value="start">Start</option>
+                                    <option value="completed">Completed</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="mb-2">
-                            <label class="form-label">Reference</label>
-                            <input type="text" id="q_reference" class="form-control"
-                                placeholder="Who referred this person? (optional)" maxlength="150">
+                        <div id="queryError" class="alert alert-danger d-none py-2 mb-2"></div>
+                        <button type="submit" class="btn btn-accent">Submit Client Query</button>
+                        <button type="button" class="btn btn-outline-secondary" id="cancelQueryFormBtn">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Client Query Modal -->
+    <div class="modal fade" id="viewQueryModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Client Query Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3"><span style="color:var(--color-muted);">Client Name</span>
+                            <div id="v_name" class="fw-semibold"></div>
                         </div>
-                        <div id="queryError" class="alert alert-danger d-none py-2 mb-0"></div>
+                        <div class="col-md-6 mb-3"><span style="color:var(--color-muted);">Email</span>
+                            <div id="v_email" class="fw-semibold"></div>
+                        </div>
+                        <div class="col-md-6 mb-3"><span style="color:var(--color-muted);">Phone</span>
+                            <div id="v_phone" class="fw-semibold"></div>
+                        </div>
+                        <div class="col-md-6 mb-3"><span style="color:var(--color-muted);">Business Type</span>
+                            <div id="v_industry" class="fw-semibold"></div>
+                        </div>
+                        <div class="col-md-6 mb-3"><span style="color:var(--color-muted);">Amount</span>
+                            <div id="v_amount" class="fw-semibold"></div>
+                        </div>
+                        <div class="col-md-6 mb-3"><span style="color:var(--color-muted);">Deal Amount</span>
+                            <div id="v_deal_amount" class="fw-semibold"></div>
+                        </div>
+                        <div class="col-md-6 mb-3"><span style="color:var(--color-muted);">Project Name</span>
+                            <div id="v_project_name" class="fw-semibold"></div>
+                        </div>
+                        <div class="col-md-6 mb-3"><span style="color:var(--color-muted);">Project Due Date</span>
+                            <div id="v_project_due_date" class="fw-semibold"></div>
+                        </div>
+                        <div class="col-md-6 mb-3"><span style="color:var(--color-muted);">Assigned Employee</span>
+                            <div id="v_assigned_employee" class="fw-semibold"></div>
+                        </div>
+                        <div class="col-md-6 mb-3"><span style="color:var(--color-muted);">Project Status</span>
+                            <div id="v_project_status" class="fw-semibold"></div>
+                        </div>
+                        <div class="col-12 mb-2"><span style="color:var(--color-muted);">Project Requirements</span>
+                            <div id="v_project_requirements" class="fw-semibold"></div>
+                        </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-accent">Submit Query</button>
-                    </div>
-                </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
@@ -106,6 +183,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/api.js"></script>
     <script src="js/sidebar.js"></script>
-    <script src="js/daily-queries.js"></script>
+    <script src="js/client-queries.js"></script>
 </body>
+
 </html>
