@@ -6,7 +6,7 @@ const SIDEBAR_ITEMS = [
     { label: "Attendance", page: "attendance.html", icon: "calendar-check", roles: ["admin", "receptionist", "employee"] },
     { label: "Employee Attendance", page: "employee-attendance.html", icon: "person-check", roles: ["admin", "receptionist"] },
     { label: "Fees & Payments", page: "fees.html", icon: "cash-coin", roles: ["admin", "receptionist"] },
-    { label: "Daily Queries", page: "daily-queries.html", icon: "chat-dots", roles: ["admin", "receptionist"] },
+    { label: "Client Queries", page: "client-queries.html", icon: "chat-dots", roles: ["admin", "receptionist"] },
     { label: "Daily Leads", page: "daily-leads.html", icon: "briefcase", roles: ["admin", "receptionist"] },
     { label: "Expenses", page: "expenses.html", icon: "receipt", roles: ["admin", "receptionist"] },
     { label: "Clients", page: "clients.html", icon: "people", roles: ["admin", "receptionist"] },
