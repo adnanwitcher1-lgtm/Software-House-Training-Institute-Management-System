@@ -17,9 +17,8 @@ urlpatterns = [
     path('api/clients/', include('clients.urls')),
     path('api/notifications/', include('notifications.urls')),
     path('api/announcements/', include('announcements.urls')),
-    path('api/daily-queries/', include('dailyqueries.urls')),
+    path('api/client-queries/', include('dailyqueries.urls')),
     path('api/daily-leads/', include('dailyleads.urls')),
     path('api/expenses/', include('expenses.urls')),
     path('api/dashboard/', include('dashboard.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
