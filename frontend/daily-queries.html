@@ -23,7 +23,7 @@
                 </div>
                 <table class="table table-institute">
                     <thead>
-                        <tr><th>Name</th><th>Email</th><th>Phone No</th><th>Category</th><th>Status</th><th class="text-end">Actions</th></tr>
+                        <tr><th>Student Name</th><th>Father's Name</th><th>Phone</th><th>Course</th><th>Reference</th><th class="text-end">Actions</th></tr>
                     </thead>
                     <tbody id="queriesTableBody"></tbody>
                 </table>
@@ -41,32 +41,56 @@
                 <form id="queryForm">
                     <div class="modal-body">
                         <input type="hidden" id="queryId">
-                        <div class="mb-2">
-                            <label class="form-label">Full Name *</label>
-                            <input type="text" id="q_full_name" class="form-control name-input" pattern="[A-Za-z\s]{2,100}" placeholder="John Doe" required>
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">Student Name *</label>
+                                <input type="text" id="q_full_name" class="form-control name-input"
+                                    placeholder="Enter full name" pattern="[A-Za-z\s]{2,60}"
+                                    title="Only letters and spaces, 2-60 characters" required>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">Father's Name *</label>
+                                <input type="text" id="q_guardian_name" class="form-control name-input"
+                                    placeholder="Enter father's name" pattern="[A-Za-z\s]{2,60}"
+                                    title="Only letters and spaces, 2-60 characters" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">Student Phone Number *</label>
+                                <input type="tel" id="q_phone" class="form-control phone-input"
+                                    placeholder="03XXXXXXXXX" pattern="[0-9]{11}" maxlength="11" inputmode="numeric"
+                                    title="Enter exactly 11 digits" required>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">Father / Guardian Phone Number *</label>
+                                <input type="tel" id="q_guardian_phone" class="form-control phone-input"
+                                    placeholder="03XXXXXXXXX" pattern="[0-9]{11}" maxlength="11" inputmode="numeric"
+                                    title="Enter exactly 11 digits" required>
+                            </div>
                         </div>
                         <div class="mb-2">
-                            <label class="form-label">Email Address *</label>
-                            <input type="email" id="q_email" class="form-control" placeholder="john@example.com" required>
-                        </div>
-                        <div class="mb-2">
-                            <label class="form-label">Phone No *</label>
-                            <input type="tel" id="q_phone" class="form-control" pattern="[0-9+\-\s]{10,20}" placeholder="03001234567" required>
-                        </div>
-                        <div class="mb-2">
-                            <label class="form-label">Your Question or Message *</label>
-                            <textarea id="q_message" class="form-control" rows="3" placeholder="How can we help you?" required></textarea>
-                        </div>
-                        <div class="mb-2">
-                            <label class="form-label">Category *</label>
-                            <input type="text" id="q_category" class="form-control" placeholder="e.g., General Inquiry, Support, Feedback" required>
-                        </div>
-                        <div class="mb-2">
-                            <label class="form-label">Status *</label>
-                            <select id="q_status" class="form-select" required>
-                                <option value="pending">Pending</option>
-                                <option value="responded">Responded</option>
+                            <label class="form-label">Gender *</label>
+                            <select id="q_gender" class="form-select" required>
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
                             </select>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Residential Address *</label>
+                            <textarea id="q_address" class="form-control" rows="2"
+                                placeholder="Enter full home address" required></textarea>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Course Selection *</label>
+                            <select id="q_course" class="form-select" required></select>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Reference</label>
+                            <input type="text" id="q_reference" class="form-control"
+                                placeholder="Who referred this person? (optional)" maxlength="150">
                         </div>
                         <div id="queryError" class="alert alert-danger d-none py-2 mb-0"></div>
                     </div>
